@@ -59,11 +59,12 @@ declare type ParamsState = {
  */
 // role
 declare interface RowRoleType {
-	roleName: string;
-	roleSign: string;
+	id :number;
+	name: string;
 	describe: string;
+	group_id:number;
 	sort: number;
-	status: boolean;
+	status: number;
 	createTime: string;
 }
 
