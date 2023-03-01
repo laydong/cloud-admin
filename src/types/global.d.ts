@@ -104,8 +104,8 @@ declare interface TableType<T = any> {
 	total: number;
 	loading: boolean;
 	param: {
-		pageNum: number;
-		pageSize: number;
+		page: number;
+		per_page: number;
 		[key: string]: T;
 	};
 }
