@@ -101,29 +101,16 @@ const onSignIn = async () => {
       Session.set('endTime', res.data.expires_at);
       initFrontEndControlRoutes();
       signInSuccess(false);
-      // if (!themeConfig.value.isRequestRoutes) {
-      //   // 前端控制路由，2、请注意执行顺序
-      //   // initFrontEndControlRoutes();
-      //   signInSuccess(isNoPower);
-      // } else {
-      //   // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
-      //   // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
-      //   // initBackEndControlRoutes();
-      //   // 执行完 initBackEndControlRoutes，再执行 signInSuccess
-      //   const isNoPower = await initFrontEndControlRoutes();
-      //   signInSuccess(isNoPower);
-      // }
     }else {
       ElMessage.error(res.msg);
       state.loading.signIn = false;
     }
+  }).catch(()=>{
+    ElMessage.error(`登录失败`);
+    // 添加 loading，防止第一次进入界面时出现短暂空白
+    // NextLoading.start();
+    state.loading.signIn = false;
   })
-  //     .catch(()=>{
-  //   ElMessage.error(`登录失败`);
-  //   // 添加 loading，防止第一次进入界面时出现短暂空白
-  //   // NextLoading.start();
-  //   state.loading.signIn = false;
-  // })
 
 
 

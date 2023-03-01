@@ -5,7 +5,7 @@ import qs from 'qs';
 
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL: import.meta.env.VITE_API_URL as any,
 	timeout: 50000,
 	headers: { 'Content-Type': 'application/json' },
 	paramsSerializer: {
@@ -22,7 +22,7 @@ service.interceptors.request.use(
 		if (Session.get('token')) {
 			config.headers!['Authorization'] = `${Session.get('token')}`;
 		}
-		(<any>config.headers).common['APP-NAME'] = import.meta.env.VITE_APP_NAME;
+		// (<any>config.headers).common['APP-NAME'] = import.meta.env.VITE_APP_NAME;
 		return config;
 	},
 	(error) => {
