@@ -81,16 +81,16 @@ export function setFilterRouteEnd() {
  * @returns 返回有当前用户权限标识的路由数组
  */
 export function setFilterRoute(chil: any) {
-	const stores = useUserInfo(pinia);
-	const { userInfos } = storeToRefs(stores);
+	// const stores = useUserInfo(pinia);
 	let filterRoute: any = [];
 	chil.forEach((route: any) => {
 		if (route.meta.roles) {
-			route.meta.roles.forEach((metaRoles: any) => {
-				userInfos.value.roles.forEach((roles: any) => {
-					if (metaRoles === roles) filterRoute.push({ ...route });
-				});
-			});
+			// route.meta.roles.forEach((metaRoles: any) => {
+				filterRoute.push({ ...route });
+				// userInfos.value.roles.forEach((roles: any) => {
+				// 	if (metaRoles === roles)
+				// });
+			// });
 		}
 	});
 	return filterRoute;
@@ -102,10 +102,10 @@ export function setFilterRoute(chil: any) {
  */
 export function setCacheTagsViewRoutes() {
 	// 获取有权限的路由，否则 tagsView、菜单搜索中无权限的路由也将显示
-	const stores = useUserInfo(pinia);
+	// const stores = useUserInfo(pinia);
 	const storesTagsView = useTagsViewRoutes(pinia);
-	const { userInfos } = storeToRefs(stores);
-	let rolesRoutes = setFilterHasRolesMenu(dynamicRoutes, userInfos.value.roles);
+	// const { userInfos } = storeToRefs(stores);
+	let rolesRoutes = setFilterHasRolesMenu(dynamicRoutes, ['admin']);
 	// 添加到 pinia setTagsViewRoutes 中
 	storesTagsView.setTagsViewRoutes(formatTwoStageRoutes(formatFlatteningRoutes(rolesRoutes))[0].children);
 }
@@ -116,10 +116,10 @@ export function setCacheTagsViewRoutes() {
  * @description 用于 tagsView、菜单搜索中：未过滤隐藏的(isHide)
  */
 export function setFilterMenuAndCacheTagsViewRoutes() {
-	const stores = useUserInfo(pinia);
+	// const stores = useUserInfo(pinia);
 	const storesRoutesList = useRoutesList(pinia);
-	const { userInfos } = storeToRefs(stores);
-	storesRoutesList.setRoutesList(setFilterHasRolesMenu(dynamicRoutes[0].children, userInfos.value.roles));
+	// const { userInfos } = storeToRefs(stores);
+	storesRoutesList.setRoutesList(setFilterHasRolesMenu(dynamicRoutes[0].children, ['admin']));
 	setCacheTagsViewRoutes();
 }
 

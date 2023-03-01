@@ -5,12 +5,18 @@
 // 用户信息
 declare interface UserInfosState<T = any> {
 	userInfos: {
+		id : number;
+		username : string;
+		nickname:string;
+		avatar:string;
+		sex :number;
+		status:number;
+		login_ip:string;
+		login_time :string;
+		menu_info:any
+		role_info:any
 		authBtnList: string[];
-		photo: string;
-		roles: string[];
 		time: number;
-		userName: string;
-		[key: string]: T;
 	};
 }
 

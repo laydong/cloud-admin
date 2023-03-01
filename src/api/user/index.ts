@@ -8,12 +8,11 @@ export function useUserApi() {
 				params,
 			});
 		},
-		// getTestMenu: (params?: object) => {
-		// 	return request({
-		// 		url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-		// 		method: 'get',
-		// 		params,
-		// 	});
-		// },
+		UserInfo: () => {
+			return request({
+				url: '/user/info',
+				method: 'get',
+			});
+		},
 	};
 }

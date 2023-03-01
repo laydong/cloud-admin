@@ -22,7 +22,7 @@ service.interceptors.request.use(
 		if (Session.get('token')) {
 			config.headers!['Authorization'] = `${Session.get('token')}`;
 		}
-		// (<any>config.headers).common['APP-NAME'] = import.meta.env.VITE_APP_NAME;
+		config.headers!['APP-NAME'] = import.meta.env.VITE_APP_NAME;
 		return config;
 	},
 	(error) => {
