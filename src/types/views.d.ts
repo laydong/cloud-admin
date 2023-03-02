@@ -68,8 +68,14 @@ declare interface RowRoleType {
 	createTime: string;
 }
 
+declare interface StatusType {
+	id :number;
+	label: string;
+}
+
 interface SysRoleTableType extends TableType {
 	data: RowRoleType[];
+	options:StatusType[];
 }
 
 declare interface SysRoleState {

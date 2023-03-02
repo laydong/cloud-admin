@@ -56,7 +56,7 @@ const onGoDetailsClick = () => {
 	router.push({
 		name: 'paramsDynamicDetails',
 		params: {
-			t: 'vue-next-admin',
+			t: 'cloud-admin',
 			id: state.value,
 			tagsViewName: state.tagsViewName,
 		},

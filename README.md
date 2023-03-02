@@ -38,7 +38,7 @@
 git clone https://github.com/laydong/cloud-admin.git
 
 # 进入项目
-cd vue-next-admin
+cd cloud-admin
 
 # 安装依赖
 npm install

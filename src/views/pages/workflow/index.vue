@@ -154,7 +154,7 @@ const initSortable = () => {
 	leftNavRefs.value.forEach((v) => {
 		Sortable.create(v as HTMLDivElement, {
 			group: {
-				name: 'vue-next-admin-1',
+				name: 'cloud-admin',
 				pull: 'clone',
 				put: false,
 			},

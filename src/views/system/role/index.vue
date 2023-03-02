@@ -2,13 +2,21 @@
 	<div class="system-role-container layout-padding">
 		<div class="system-role-padding layout-padding-auto layout-padding-view">
 			<div class="system-user-search mb15">
-				<el-input v-model="state.tableData.param.name" size="default" placeholder="请输入角色名称" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10">
-					<el-icon>
-						<ele-Search />
-					</el-icon>
-					查询
-				</el-button>
+				<el-input v-model="state.tableData.param.name" size="default" placeholder="请输入角色名称" style="max-width: 200px"> </el-input>
+        <el-select v-model="state.tableData.param.status" size="default" class="ml10" placeholder="请选择状态">
+          <el-option
+              v-for="item in state.tableData.options"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+          />
+        </el-select>
+        <el-button size="default" type="primary" class="ml10" @click="onOpenSearch()">
+          <el-icon>
+            <ele-Search />
+          </el-icon>
+          查询
+        </el-button>
 				<el-button size="default" type="success" class="ml10" @click="onOpenAddRole('add')">
 					<el-icon>
 						<ele-FolderAdd />
@@ -76,6 +84,7 @@ const state = reactive<SysRoleState>({
       page: 1,
       per_page: 10,
 		},
+    options:[{'id':0,'label':"全部"},{'id':1,'label':"启用"},{'id':2,'label':"禁用"}]
 	},
 });
 // 初始化表格数据
@@ -92,6 +101,21 @@ const getTableData = () => {
 	}, 500);
 };
 // 打开新增角色弹窗
+
+//搜索
+const onOpenSearch = ()=>{
+  state.tableData.loading = true;
+  useRole().getRoleList(state.tableData.param).then((res:any)=>{
+    if (res.code == 200 ) {
+      state.tableData.data =  res.data.data;
+      state.tableData.total = state.tableData.data.length;
+    }
+  })
+  setTimeout(() => {
+    state.tableData.loading = false;
+  }, 500);
+}
+
 const onOpenAddRole = (type: string) => {
 	roleDialogRef.value.openDialog(type);
 };
@@ -129,12 +153,8 @@ onMounted(() => {
 
 const OpenStatus = (row:any) =>{
   useRole().UpdateRole(row).then((res:any)=>{
-    if (res.code == 200 ) {
-      if (row.status == 1){
-        row.status = 2
-      }else {
-        row.status = 1
-      }
+    if (res.code != 200 ) {
+      ElMessage.success('更新失败');
     }
   })
 }

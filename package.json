@@ -73,7 +73,7 @@
 		"vuejs/vue-next",
 		"element-ui",
 		"element-plus",
-		"vue-next-admin",
+		"cloud-admin",
 		"next-admin"
 	],
 	"repository": {
