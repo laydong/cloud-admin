@@ -40,14 +40,14 @@
           </template>
         </el-table-column>
 				<el-table-column prop="mobile" label="手机号" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="role" label="角色" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="email" label="邮箱" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="status" label="用户状态" show-overflow-tooltip>
-					<template #default="scope">
-						<el-tag type="success" v-if="scope.row.status">启用</el-tag>
-						<el-tag type="info" v-else>禁用</el-tag>
-					</template>
-				</el-table-column>
-				<el-table-column prop="remarks" label="用户描述" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip>
+          <template #default="scope">
+            <el-switch :disabled="scope.row.id === 1" v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
+          </template>
+        </el-table-column>
+				<el-table-column prop="describe" label="用户描述" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="created_at" label="创建时间" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
@@ -80,7 +80,6 @@
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import {useUserApi} from "/@/api/user";
-import {useRole} from "/@/api/role";
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/system/user/dialog.vue'));
@@ -150,6 +149,13 @@ const onOpenSearch = ()=>{
   setTimeout(() => {
     state.tableData.loading = false;
   }, 500);
+}
+const OpenStatus = (row:any) =>{
+  useUserApi().UserStatus({'id':row.id,'status':row.status}).then((res:any)=>{
+    if (res.code != 200 ) {
+      ElMessage.success('更新失败');
+    }
+  })
 }
 const onHandleSizeChange = (val: number) => {
 	state.tableData.param.pageSize = val;

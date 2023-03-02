@@ -99,8 +99,11 @@ declare type RowUserType<T = any> = {
 	sex: number;
 	score: string;
 	status: number;
+	role_info:[];
+	role_ids:[],
+	role:string;
 	login_ip: string;
-	remarks: string;
+	describe: string;
 	login_time:string;
 	created_at: T;
 	updated_at: T;

@@ -22,6 +22,12 @@ export function useRole() {
 				params,
 			});
 		},
+		getRoleAll: () => {
+			return request({
+				url: '/role/all',
+				method: 'get',
+			});
+		},
 		UpdateRole: (params?: object) => {
 			return request({
 				url: '/role/update',
