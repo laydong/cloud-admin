@@ -129,21 +129,22 @@ const openDialog = (type: string, row: RowUserType) => {
         return
       }
     })
-    // state.ruleForm.nickname = row.nickname;
-    // state.ruleForm.username = row.username;
-    // state.ruleForm.avatar = row.avatar;
-    // state.ruleForm.email = row.email;
-    // state.ruleForm.mobile = row.mobile;
-    // state.ruleForm.sex = row.sex;
-    // state.ruleForm.status = row.status;
-    // state.ruleForm.roleIds = row.roleIds;
-    // state.ruleForm.role_info = row.role_info;
-    // state.ruleForm.remarks = row.remarks;
 		state.dialog.title = '修改用户';
 		state.dialog.submitTxt = '修 改';
 	} else {
 		state.dialog.title = '新增用户';
 		state.dialog.submitTxt = '新 增';
+    state.ruleForm.id =0;
+    state.ruleForm.nickname = '';
+    state.ruleForm.username = '';
+    state.ruleForm.avatar = '';
+    state.ruleForm.email = '';
+    state.ruleForm.mobile = '';
+    state.ruleForm.sex = 1;
+    state.ruleForm.status = 1;
+    state.ruleForm.role_info = [];
+    state.ruleForm.describe = '';
+
 		// 清空表单，此项需加表单验证才能使用
 		// nextTick(() => {
 		// 	userDialogFormRef.value.resetFields();
@@ -164,7 +165,15 @@ const onCancel = () => {
 const onSubmit = () => {
 	closeDialog();
 	if (state.dialog.type === 'add') {
-    emit('refresh');
+    useUserApi().UserCreate(state.ruleForm).then((res:any)=>{
+      if (res.code == 200 ) {
+        ElMessage.success(res.msg);
+        emit('refresh');
+      }else {
+        ElMessage.error(res.msg);
+        return
+      }
+    })
   }else {
     useUserApi().UserUpdate(state.ruleForm).then((res:any)=>{
       if (res.code == 200 ) {

@@ -35,5 +35,12 @@ export function useUserApi() {
 				data:data,
 			});
 		},
+		UserCreate: (data?: object) => {
+			return request({
+				url: '/user/create',
+				method: 'post',
+				data:data,
+			});
+		},
 	};
 }
