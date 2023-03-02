@@ -36,5 +36,12 @@ export function useRole() {
 				data:params,
 			});
 		},
+		DelRole: (params?: object) => {
+			return request({
+				url: '/role/del',
+				method: 'post',
+				data:params,
+			});
+		},
 	};
 }

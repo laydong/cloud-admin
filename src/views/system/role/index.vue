@@ -31,7 +31,7 @@
 				<el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="角色状态" show-overflow-tooltip>
           <template #default="scope">
-            <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
+            <el-switch :disabled="scope.row.id === 1" v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
 				<el-table-column prop="describe" label="角色描述" show-overflow-tooltip></el-table-column>
@@ -131,8 +131,14 @@ const onRowDel = (row: RowRoleType) => {
 		type: 'warning',
 	})
 		.then(() => {
-			getTableData();
-			ElMessage.success('删除成功');
+      useRole().DelRole({'id':row.id}).then((res:any)=>{
+        if (res.code == 200 ) {
+          getTableData();
+          ElMessage.success('删除成功');
+        }else {
+          ElMessage.error('删除失败');
+        }
+      })
 		})
 		.catch(() => {});
 };

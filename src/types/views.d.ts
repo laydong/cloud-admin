@@ -83,29 +83,32 @@ declare interface SysRoleState {
 }
 
 declare type TreeType = {
-	id: number;
-	label: string;
-	children?: TreeType[];
+	id: number
+	label: string
+	children?: TreeType[]
 };
 
 // user
 declare type RowUserType<T = any> = {
-	userName: string;
-	userNickname: string;
-	roleSign: string;
-	department: string[];
-	phone: string;
+	id:number;
+	username: string;
+	nickname: string;
+	avatar: string;
 	email: string;
-	sex: string;
-	password: string;
-	overdueTime: T;
-	status: boolean;
-	describe: string;
-	createTime: T;
+	mobile: string;
+	sex: number;
+	score: string;
+	status: number;
+	login_ip: string;
+	remarks: string;
+	login_time:string;
+	created_at: T;
+	updated_at: T;
 };
 
 interface SysUserTableType extends TableType {
 	data: RowUserType[];
+	options:StatusType[];
 }
 
 declare interface SysUserState {
@@ -294,8 +297,8 @@ declare type WorkflowDrawerState<T = any> = {
  */
 // tableDemo
 declare type TableDemoPageType = {
-	pageNum: number;
-	pageSize: number;
+	page: number;
+	per_page: number;
 };
 
 declare type TableHeaderType = {
