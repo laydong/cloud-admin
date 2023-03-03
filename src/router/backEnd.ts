@@ -9,12 +9,12 @@ import { dynamicRoutes, notFoundAndNoPower } from '/@/router/route';
 import { formatTwoStageRoutes, formatFlatteningRoutes, router } from '/@/router/index';
 import { useRoutesList } from '/@/stores/routesList';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
-import { useMenuApi } from '/@/api/menu/index';
+// import { useMenuApi } from '/@/api/menu/index';
 
 // 后端控制路由
 
 // 引入 api 请求接口
-const menuApi = useMenuApi();
+// const menuApi = useMenuApi();
 
 /**
  * 获取目录下的 .vue、.tsx 全部文件
@@ -45,11 +45,11 @@ export async function initBackEndControlRoutes() {
 	const res = await getBackEndControlRoutes();
 	// 无登录权限时，添加判断
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
-	if (res.data.length <= 0) return Promise.resolve(true);
+	// if (res.data.length <= 0) return Promise.resolve(true);
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
+	// useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
-	dynamicRoutes[0].children = await backEndComponent(res.data);
+	// dynamicRoutes[0].children = await backEndComponent(res.data);
 	// 添加动态路由
 	await setAddRoute();
 	// 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -108,13 +108,11 @@ export async function setAddRoute() {
  */
 export function getBackEndControlRoutes() {
 	// 模拟 admin 与 test
-	const stores = useUserInfo(pinia);
-	const { userInfos } = storeToRefs(stores);
-	const auth = userInfos.value.roles[0];
+
+
+
 	// 管理员 admin
-	if (auth === 'admin') return menuApi.getAdminMenu();
-	// 其它用户 test
-	else return menuApi.getTestMenu();
+	// return menuApi.getAdminMenu();
 }
 
 /**
