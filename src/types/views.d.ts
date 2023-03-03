@@ -82,6 +82,29 @@ declare interface SysRoleState {
 	tableData: SysRoleTableType;
 }
 
+declare interface RowApiType {
+	id :number;
+	name: string;
+	describe: string;
+	sort: number;
+	status: number;
+	createTime: string;
+}
+
+declare interface StatusType {
+	id :number;
+	label: string;
+}
+
+interface SysApiTableType extends TableType {
+	data: RowRoleType[];
+	options:StatusType[];
+}
+
+declare interface SysApiState {
+	tableData: SysApiTableType;
+}
+
 declare type TreeType = {
 	id: number
 	label: string

@@ -73,7 +73,7 @@ const RoleDialog = defineAsyncComponent(() => import('/@/views/system/role/dialo
 // 定义变量内容
 const roleDialogRef = ref();
 
-const state = reactive<SysRoleState>({
+const state = reactive<SysApiState>({
 	tableData: {
 		data: [],
 		total: 0,
