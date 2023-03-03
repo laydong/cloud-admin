@@ -27,7 +27,7 @@
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
 				<el-table-column prop="name" label="API名称" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="group_id" label="角色标识" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="url" label="角色标识" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="角色状态" show-overflow-tooltip>
           <template #default="scope">
