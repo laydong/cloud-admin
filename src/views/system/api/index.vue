@@ -29,12 +29,12 @@
 				<el-table-column prop="name" label="API名称" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="url" label="角色标识" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="status" label="角色状态" show-overflow-tooltip>
+        <el-table-column prop="status" label="状态" show-overflow-tooltip>
           <template #default="scope">
             <el-switch :disabled="scope.row.id === 1" v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
-				<el-table-column prop="describe" label="角色描述" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="describe" label="描述" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
