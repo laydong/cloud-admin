@@ -85,9 +85,14 @@ declare interface SysRoleState {
 declare interface RowApiType {
 	id :number;
 	name: string;
+	hidden:number;
+	type:number;
+	url:string;
+	method:string;
 	describe: string;
 	sort: number;
 	status: number;
+	service_id:number;
 	createTime: string;
 }
 
@@ -97,7 +102,7 @@ declare interface StatusType {
 }
 
 interface SysApiTableType extends TableType {
-	data: RowRoleType[];
+	data: RowApiType[];
 	options:StatusType[];
 }
 

@@ -11,6 +11,14 @@
               :value="item.id"
           />
         </el-select>
+        <el-select v-model="state.tableData.param.hidden" size="default" class="ml10" placeholder="请选择API类型">
+          <el-option
+              v-for="item in state.tableData.options"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+          />
+        </el-select>
         <el-button size="default" type="primary" class="ml10" @click="onOpenSearch()">
           <el-icon>
             <ele-Search />
@@ -27,21 +35,34 @@
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
 				<el-table-column prop="name" label="API名称" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="url" label="角色标识" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="method" label="请求方式" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="url" label="路由" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="hidden" label="API类型" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.hidden==1">公共</el-tag>
+            <el-tag type="info" v-else>鉴权</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="鉴权类型" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.type==1">登录鉴权</el-tag>
+            <el-tag type="info" v-else>角色鉴权</el-tag>
+          </template>
+        </el-table-column>
 				<el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="状态" show-overflow-tooltip>
           <template #default="scope">
-            <el-switch :disabled="scope.row.id === 1" v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁" @click="OpenStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
 				<el-table-column prop="describe" label="描述" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
-						<el-button :disabled="scope.row.id === 1" size="small" text type="primary" @click="onOpenEditRole('edit', scope.row)"
+						<el-button size="small" text type="primary" @click="onOpenEditRole('edit', scope.row)"
 							>修改</el-button
 						>
-						<el-button :disabled="scope.row.id === 1" size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
+						<el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -59,16 +80,16 @@
 			>
 			</el-pagination>
 		</div>
-		<RoleDialog ref="roleDialogRef" @refresh="getTableData()" />
+		<ApiDialog ref="roleDialogRef" @refresh="getTableData()" />
 	</div>
 </template>
 
 <script setup lang="ts" name="systemRole">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import {useRole} from "/@/api/role";
+import {useApiData} from "/@/api/api";
 // 引入组件
-const RoleDialog = defineAsyncComponent(() => import('/@/views/system/role/dialog.vue'));
+const ApiDialog = defineAsyncComponent(() => import('/@/views/system/api/dialog.vue'));
 
 // 定义变量内容
 const roleDialogRef = ref();
@@ -90,7 +111,7 @@ const state = reactive<SysApiState>({
 // 初始化表格数据
 const getTableData = () => {
 	state.tableData.loading = true;
-  useRole().getRoleList(state.tableData.param).then((res:any)=>{
+  useApiData().getApiList(state.tableData.param).then((res:any)=>{
     if (res.code == 200 ) {
       state.tableData.data =  res.data.data;
       state.tableData.total = state.tableData.data.length;
@@ -105,7 +126,7 @@ const getTableData = () => {
 //搜索
 const onOpenSearch = ()=>{
   state.tableData.loading = true;
-  useRole().getRoleList(state.tableData.param).then((res:any)=>{
+  useApiData().getApiList(state.tableData.param).then((res:any)=>{
     if (res.code == 200 ) {
       state.tableData.data =  res.data.data;
       state.tableData.total = state.tableData.data.length;
@@ -131,7 +152,7 @@ const onRowDel = (row: RowRoleType) => {
 		type: 'warning',
 	})
 		.then(() => {
-      useRole().DelRole({'id':row.id}).then((res:any)=>{
+      useApiData().DelApi({'id':row.id}).then((res:any)=>{
         if (res.code == 200 ) {
           getTableData();
           ElMessage.success('删除成功');
@@ -158,7 +179,7 @@ onMounted(() => {
 });
 
 const OpenStatus = (row:any) =>{
-  useRole().UpdateRole(row).then((res:any)=>{
+  useApiData().UpdateApi(row).then((res:any)=>{
     if (res.code != 200 ) {
       ElMessage.success('更新失败');
     }

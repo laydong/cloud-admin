@@ -4,38 +4,64 @@
 			<el-form ref="roleDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
 				<el-row :gutter="35">
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="角色名称">
-							<el-input v-model="state.ruleForm.name" placeholder="请输入角色名称" clearable></el-input>
+						<el-form-item label="API名称">
+							<el-input v-model="state.ruleForm.name" placeholder="请输入API名称" clearable></el-input>
 						</el-form-item>
 					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="角色标识">
-							<template #label>
-								<el-tooltip effect="dark" content="用于 `router/route.ts` meta.roles" placement="top-start">
-									<span>角色标识</span>
-								</el-tooltip>
-							</template>
-							<el-input v-model="state.ruleForm.group_id" placeholder="请输入角色标识" clearable></el-input>
-						</el-form-item>
-					</el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="请求方式">
+              <el-select v-model="state.ruleForm.method" clearable placeholder="选择请求方式">
+                <el-option
+                    v-for="item in state.methodType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="API路由">
+              <el-input v-model="state.ruleForm.url" placeholder="请输入API路由" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="API类型">
+              <el-select v-model="state.ruleForm.hidden" clearable placeholder="选择类型">
+                <el-option
+                    v-for="item in state.hiddenType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="鉴权类型">
+              <el-select v-model="state.ruleForm.type" clearable placeholder="选择鉴权类型">
+                <el-option
+                    v-for="item in state.typeType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 						<el-form-item label="排序">
 							<el-input-number v-model="state.ruleForm.sort" :min="0" :max="999" controls-position="right" placeholder="请输入排序" class="w100" />
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="角色状态">
+						<el-form-item label="状态">
 							<el-switch v-model="state.ruleForm.status" :active-value="1" :inactive-value="2" inline-prompt active-text="启" inactive-text="禁"></el-switch>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-						<el-form-item label="角色描述">
-							<el-input v-model="state.ruleForm.describe" type="textarea" placeholder="请输入角色描述" maxlength="150"></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-						<el-form-item label="菜单权限">
-							<el-tree  ref="treeRef" :data="state.menuData" :props="state.menuProps"  :default-checked-keys="state.ruleForm.menu_ids" node-key="id" highlight-current show-checkbox class="menu-data-tree" />
+						<el-form-item label="描述">
+							<el-input v-model="state.ruleForm.describe" type="textarea" placeholder="请输入描述" maxlength="150"></el-input>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -50,31 +76,27 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="systemRoleDialog">
+<script setup lang="ts" name="systemApiDialog">
 import { reactive, ref } from 'vue';
-import { ElMessage,ElTree } from 'element-plus';
-import {useMenuApi} from "/@/api/menu";
-import {useRole} from "/@/api/role";
+import { ElMessage } from 'element-plus';
+import {useApiData} from "/@/api/api";
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
-
-export declare type TreeKey = string | number;
 // 定义变量内容
 const roleDialogFormRef = ref();
 const state = reactive({
 	ruleForm: {
     id :0,
     name: '',
+    hidden:1,
+    type:1,
+    url:'',
+    method:'',
     describe: '',
-    group_id:0,
     sort: 99,
     status: 1,
-    menu_ids:[] as TreeKey[],
-	},
-	menuData: [] as TreeType[],
-	menuProps: {
-		children: 'children',
-		label: 'label',
+    service_id:0,
+    createTime: '',
 	},
 	dialog: {
 		isShowDialog: false,
@@ -82,48 +104,42 @@ const state = reactive({
 		title: '',
 		submitTxt: '',
 	},
+  methodType:[{value:'get',label:'GET'},{value:'post',label:'POST'},{value:'put',label:'PUT'},{value:'delete',label:'DELETE'},{value:'patch',label: 'PATCH'}] as methodType[],
+  hiddenType:[{value:1,label:'公共路由'},{value:2,label:'鉴权路由'}],
+  typeType:[{value:1,label:'登录鉴权'},{value:2,label:'角色鉴权'}],
 });
 
-const treeRef = ref<InstanceType<typeof ElTree>>()
+declare type methodType = {
+  value: string;
+  label: string;
+};
 
 // 打开弹窗
-const openDialog = (type: string, row: RowRoleType) => {
+const openDialog = (type: string, row: RowApiType) => {
   state.dialog.type = type
 	if (type === 'edit') {
-    state.ruleForm.id = row.id
-    // state.ruleForm.name = row.name
-    // state.ruleForm.group_id = row.group_id
-    // state.ruleForm.status = row.status
-    // state.ruleForm.describe = row.describe
-    // state.ruleForm.sort = row.sort
-    // state.ruleForm.menu_ids = []
-		state.dialog.title = '修改角色';
-		state.dialog.submitTxt = '修 改';
-    useRole().getRoleInfo({"id":state.ruleForm.id}).then((res:any)=>{
-      if ( res.code == 200 ) {
-        state.ruleForm = res.data
-      }else {
-        ElMessage.error(res.msg);
-        return
-      }
-    })
+    state.ruleForm = row
+    state.dialog.title = '修改角色';
+    state.dialog.submitTxt = '修 改';
 	} else {
 		state.dialog.title = '新增角色';
 		state.dialog.submitTxt = '新 增';
     state.ruleForm.id = 0
     state.ruleForm.name = ''
-    state.ruleForm.group_id = 0
+    state.ruleForm.hidden = 1
+    state.ruleForm.type = 1
+    state.ruleForm.url =''
+    state.ruleForm.method =''
+    state.ruleForm.service_id =0
     state.ruleForm.status = 1
     state.ruleForm.describe = ''
     state.ruleForm.sort = 99
-    state.ruleForm.menu_ids = []
 		// 清空表单，此项需加表单验证才能使用
 		// nextTick(() => {
 		// 	roleDialogFormRef.value.resetFields();
 		// });
 	}
 	state.dialog.isShowDialog = true;
-	getMenuData();
 };
 // 关闭弹窗
 const closeDialog = () => {
@@ -136,9 +152,8 @@ const onCancel = () => {
 // 提交
 const onSubmit = () => {
 	closeDialog();
-  state.ruleForm.menu_ids =treeRef.value!.getCheckedKeys(false)
 	if (state.dialog.type === 'add') {
-    useRole().CreateRole(state.ruleForm).then((res:any)=>{
+    useApiData().CreateApi(state.ruleForm).then((res:any)=>{
       if ( res.code == 200 ) {
         ElMessage.success(res.msg);
         emit('refresh');
@@ -147,7 +162,7 @@ const onSubmit = () => {
       }
     })
   }else {
-    useRole().UpdateRole(state.ruleForm).then((res:any)=>{
+    useApiData().UpdateApi(state.ruleForm).then((res:any)=>{
       if ( res.code == 200 ) {
         ElMessage.success(res.msg);
         emit('refresh');
@@ -156,118 +171,6 @@ const onSubmit = () => {
       }
     })
   }
-};
-// 获取菜单结构数据
-const getMenuData = () => {
-  useMenuApi().getMenuAll().then((res:any)=>{
-    if ( res.code == 200 ) {
-      state.menuData = res.data
-    }
-  })
-	// state.menuData = [
-	// 	{
-	// 		id: 1,
-	// 		label: '系统管理',
-	// 		children: [
-	// 			{
-	// 				id: 11,
-	// 				label: '菜单管理',
-	// 				children: [
-	// 					{
-	// 						id: 111,
-	// 						label: '菜单新增',
-	// 					},
-	// 					{
-	// 						id: 112,
-	// 						label: '菜单修改',
-	// 					},
-	// 					{
-	// 						id: 113,
-	// 						label: '菜单删除',
-	// 					},
-	// 					{
-	// 						id: 114,
-	// 						label: '菜单查询',
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				id: 12,
-	// 				label: '角色管理',
-	// 				children: [
-	// 					{
-	// 						id: 121,
-	// 						label: '角色新增',
-	// 					},
-	// 					{
-	// 						id: 122,
-	// 						label: '角色修改',
-	// 					},
-	// 					{
-	// 						id: 123,
-	// 						label: '角色删除',
-	// 					},
-	// 					{
-	// 						id: 124,
-	// 						label: '角色查询',
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				id: 13,
-	// 				label: '用户管理',
-	// 				children: [
-	// 					{
-	// 						id: 131,
-	// 						label: '用户新增',
-	// 					},
-	// 					{
-	// 						id: 132,
-	// 						label: '用户修改',
-	// 					},
-	// 					{
-	// 						id: 133,
-	// 						label: '用户删除',
-	// 					},
-	// 					{
-	// 						id: 134,
-	// 						label: '用户查询',
-	// 					},
-	// 				],
-	// 			},
-	// 		],
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		label: '权限管理',
-	// 		children: [
-	// 			{
-	// 				id: 21,
-	// 				label: '前端控制',
-	// 				children: [
-	// 					{
-	// 						id: 211,
-	// 						label: '页面权限',
-	// 					},
-	// 					{
-	// 						id: 212,
-	// 						label: '页面权限',
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				id: 22,
-	// 				label: '后端控制',
-	// 				children: [
-	// 					{
-	// 						id: 221,
-	// 						label: '页面权限',
-	// 					},
-	// 				],
-	// 			},
-	// 		],
-	// 	},
-	// ];
 };
 
 // 暴露变量
