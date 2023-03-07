@@ -25,7 +25,7 @@ export async function initFrontEndControlRoutes() {
 	if (!Session.get('token')) return false;
 	await useUserInfo(pinia).setUserInfos();
 	// 无登录权限时，添加判断
-	if (useUserInfo().userInfos.menu_info.length <= 0) return Promise.resolve(true);
+	// if (useUserInfo().userInfos.menu_info.length <= 0) return Promise.resolve(true);
 	// 添加动态路由
 	await setAddRoute();
 	// 设置递归过滤有权限的路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -125,6 +125,8 @@ export function setFilterMenuAndCacheTagsViewRoutes() {
 		})
 		return
 	}
+	console.log(userInfos)
+	console.log(roleID)
 	storesRoutesList.setRoutesList(setFilterHasRolesMenu(dynamicRoutes[0].children,roleID, userInfos.value.menu_info));
 	setCacheTagsViewRoutes();
 }
@@ -136,8 +138,10 @@ export function setFilterMenuAndCacheTagsViewRoutes() {
  * @returns 返回对比后有权限的路由项
  */
 export function hasRoles(roles: any, route: any) {
-	if (route.meta && route.meta.roles) return roles.some((role: any) => route.meta.roles.includes(role));
-	else return true;
+
+	// if (route.meta && route.meta.roles) return roles.some((role: any) => roles.includes(role));
+	// else return true;
+	return true
 }
 
 /**
@@ -154,7 +158,7 @@ export function setFilterHasRolesMenu(routes: any,roles:number, menuInfo: any) {
 			if (item.children) item.children = setFilterHasRolesMenu(item.children,roles, menuInfo);
 			menu.push(item);
 		}else {
-			if (hasRoles(menuInfo, item)) {
+			if (hasRoles(menuInfo, item.name)) {
 				if (item.children) item.children = setFilterHasRolesMenu(item.children,roles, menuInfo);
 				menu.push(item);
 			}
