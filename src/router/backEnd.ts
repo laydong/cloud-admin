@@ -1,8 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
-import { storeToRefs } from 'pinia';
+// import { storeToRefs } from 'pinia';
 import pinia from '/@/stores/index';
 import { useUserInfo } from '/@/stores/userInfo';
-import { useRequestOldRoutes } from '/@/stores/requestOldRoutes';
+// import { useRequestOldRoutes } from '/@/stores/requestOldRoutes';
 import { Session } from '/@/utils/storage';
 import { NextLoading } from '/@/utils/loading';
 import { dynamicRoutes, notFoundAndNoPower } from '/@/router/route';
@@ -41,7 +41,7 @@ export async function initBackEndControlRoutes() {
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 	await useUserInfo().setUserInfos();
 	// 获取路由菜单数据
-	const res = await getBackEndControlRoutes();
+	// const res = await getBackEndControlRoutes();
 	// 无登录权限时，添加判断
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
 	// if (res.data.length <= 0) return Promise.resolve(true);
@@ -107,7 +107,7 @@ export async function setAddRoute() {
  */
 export function getBackEndControlRoutes() {
 	// 管理员 admin
-	return menuApi.getAdminMenu();
+	// return menuApi.getAdminMenu();
 }
 
 /**

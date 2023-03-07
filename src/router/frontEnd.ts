@@ -23,8 +23,6 @@ export async function initFrontEndControlRoutes() {
 	if (window.nextLoading === undefined) NextLoading.start();
 	// 无 token 停止执行下一步
 	if (!Session.get('token')) return false;
-	// 触发初始化用户信息 pinia
-	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 	await useUserInfo(pinia).setUserInfos();
 	// 无登录权限时，添加判断
 	if (useUserInfo().userInfos.menu_info.length <= 0) return Promise.resolve(true);
@@ -104,7 +102,7 @@ export function setCacheTagsViewRoutes() {
 	// const stores = useUserInfo(pinia);
 	const storesTagsView = useTagsViewRoutes(pinia);
 	// const { userInfos } = storeToRefs(stores);
-	let rolesRoutes = setFilterHasRolesMenu(dynamicRoutes, ['admin']);
+	let rolesRoutes = setFilterHasRolesMenu(dynamicRoutes, 1,['admin']);
 	// 添加到 pinia setTagsViewRoutes 中
 	storesTagsView.setTagsViewRoutes(formatTwoStageRoutes(formatFlatteningRoutes(rolesRoutes))[0].children);
 }

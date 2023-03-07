@@ -117,7 +117,6 @@ router.beforeEach(async (to, from, next) => {
 					// to.query 防止页面刷新时，普通路由带参数时，参数丢失。动态路由（xxx/:id/:name"）isDynamic 无需处理
 					next({ path: to.path, query: to.query });
 				} else {
-					// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 					await initFrontEndControlRoutes();
 					next({ path: to.path, query: to.query });
 				}
