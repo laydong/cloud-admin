@@ -13,11 +13,19 @@ declare interface UserInfosState<T = any> {
 		status:number;
 		login_ip:string;
 		login_time :string;
-		menu_info:any
-		role_info:any
+		menu_info:UserRoleState[];
+		role_info:string[];
 		authBtnList: string[];
 		time: number;
 	};
+}
+
+declare interface UserRoleState {
+	id: number;
+	group_id: number;
+	name: string;
+	status: number;
+	describe: string;
 }
 
 // 路由缓存列表

@@ -27,8 +27,7 @@ export async function initFrontEndControlRoutes() {
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 	await useUserInfo(pinia).setUserInfos();
 	// 无登录权限时，添加判断
-	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
-	// if (useUserInfo().userInfos.roles.length <= 0) return Promise.resolve(true);
+	if (useUserInfo().userInfos.menu_info.length <= 0) return Promise.resolve(true);
 	// 添加动态路由
 	await setAddRoute();
 	// 设置递归过滤有权限的路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -116,10 +115,19 @@ export function setCacheTagsViewRoutes() {
  * @description 用于 tagsView、菜单搜索中：未过滤隐藏的(isHide)
  */
 export function setFilterMenuAndCacheTagsViewRoutes() {
-	// const stores = useUserInfo(pinia);
+	const stores = useUserInfo(pinia);
 	const storesRoutesList = useRoutesList(pinia);
-	// const { userInfos } = storeToRefs(stores);
-	storesRoutesList.setRoutesList(setFilterHasRolesMenu(dynamicRoutes[0].children, ['admin']));
+	const { userInfos } = storeToRefs(stores);
+	let roleID = 1;
+	if (userInfos.value.role_info.length > 0){
+		userInfos.value.role_info.forEach((item: any) => {
+			if (item.id == 1){
+				roleID= 1
+			}
+		})
+		return
+	}
+	storesRoutesList.setRoutesList(setFilterHasRolesMenu(dynamicRoutes[0].children,roleID, userInfos.value.menu_info));
 	setCacheTagsViewRoutes();
 }
 
@@ -140,13 +148,18 @@ export function hasRoles(roles: any, route: any) {
  * @param roles 用户权限标识，在 userInfos（用户信息）的 roles（登录页登录时缓存到浏览器）数组
  * @returns 返回有权限的路由数组 `meta.roles` 中控制
  */
-export function setFilterHasRolesMenu(routes: any, roles: any) {
+export function setFilterHasRolesMenu(routes: any,roles:number, menuInfo: any) {
 	const menu: any = [];
 	routes.forEach((route: any) => {
 		const item = { ...route };
-		if (hasRoles(roles, item)) {
-			if (item.children) item.children = setFilterHasRolesMenu(item.children, roles);
+		if (roles == 1){
+			if (item.children) item.children = setFilterHasRolesMenu(item.children,roles, menuInfo);
 			menu.push(item);
+		}else {
+			if (hasRoles(menuInfo, item)) {
+				if (item.children) item.children = setFilterHasRolesMenu(item.children,roles, menuInfo);
+				menu.push(item);
+			}
 		}
 	});
 	return menu;

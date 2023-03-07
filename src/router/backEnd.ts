@@ -19,7 +19,6 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 /**
  * 获取目录下的 .vue、.tsx 全部文件
  * @method import.meta.glob
- * @link 参考：https://cn.vitejs.dev/guide/features.html#json
  */
 const layouModules: any = import.meta.glob('../layout/routerView/*.{vue,tsx}');
 const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
@@ -107,12 +106,8 @@ export async function setAddRoute() {
  * @returns 返回后端路由菜单数据
  */
 export function getBackEndControlRoutes() {
-	// 模拟 admin 与 test
-
-
-
 	// 管理员 admin
-	// return menuApi.getAdminMenu();
+	return menuApi.getAdminMenu();
 }
 
 /**
