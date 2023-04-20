@@ -7,7 +7,7 @@
 					<div class="personal-user">
 						<div class="personal-user-left">
 							<el-upload class="h100 personal-user-left-upload" action="https://jsonplaceholder.typicode.com/posts/" multiple :limit="1">
-								<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
+								<img :src="userInfos.avatar" />
 							</el-upload>
 						</div>
 						<div class="personal-user-right">
@@ -17,11 +17,11 @@
 									<el-row>
 										<el-col :xs="24" :sm="8" class="personal-item mb6">
 											<div class="personal-item-label">昵称：</div>
-											<div class="personal-item-value">小柒</div>
+											<div class="personal-item-value">{{userInfos.nickname}}</div>
 										</el-col>
 										<el-col :xs="24" :sm="16" class="personal-item mb6">
 											<div class="personal-item-label">身份：</div>
-											<div class="personal-item-value">超级管理</div>
+											<div class="personal-item-value">超级管理员</div>
 										</el-col>
 									</el-row>
 								</el-col>
@@ -29,11 +29,11 @@
 									<el-row>
 										<el-col :xs="24" :sm="8" class="personal-item mb6">
 											<div class="personal-item-label">登录IP：</div>
-											<div class="personal-item-value">192.168.1.1</div>
+											<div class="personal-item-value">{{userInfos.login_ip}}</div>
 										</el-col>
 										<el-col :xs="24" :sm="16" class="personal-item mb6">
 											<div class="personal-item-label">登录时间：</div>
-											<div class="personal-item-value">2021-02-05 18:47:26</div>
+											<div class="personal-item-value">{{userInfos.login_time}}</div>
 										</el-col>
 									</el-row>
 								</el-col>
@@ -61,21 +61,21 @@
 			</el-col>
 
 			<!-- 营销推荐 -->
-			<el-col :span="24">
-				<el-card shadow="hover" class="mt15" header="营销推荐">
-					<el-row :gutter="15" class="personal-recommend-row">
-						<el-col :sm="6" v-for="(v, k) in state.recommendList" :key="k" class="personal-recommend-col">
-							<div class="personal-recommend" :style="{ 'background-color': v.bg }">
-								<SvgIcon :name="v.icon" :size="70" :style="{ color: v.iconColor }" />
-								<div class="personal-recommend-auto">
-									<div>{{ v.title }}</div>
-									<div class="personal-recommend-msg">{{ v.msg }}</div>
-								</div>
-							</div>
-						</el-col>
-					</el-row>
-				</el-card>
-			</el-col>
+<!--			<el-col :span="24">-->
+<!--				<el-card shadow="hover" class="mt15" header="营销推荐">-->
+<!--					<el-row :gutter="15" class="personal-recommend-row">-->
+<!--						<el-col :sm="6" v-for="(v, k) in state.recommendList" :key="k" class="personal-recommend-col">-->
+<!--							<div class="personal-recommend" :style="{ 'background-color': v.bg }">-->
+<!--								<SvgIcon :name="v.icon" :size="70" :style="{ color: v.iconColor }" />-->
+<!--								<div class="personal-recommend-auto">-->
+<!--									<div>{{ v.title }}</div>-->
+<!--									<div class="personal-recommend-msg">{{ v.msg }}</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</el-col>-->
+<!--					</el-row>-->
+<!--				</el-card>-->
+<!--			</el-col>-->
 
 			<!-- 更新信息 -->
 			<el-col :span="24">
@@ -187,7 +187,10 @@
 import { reactive, computed } from 'vue';
 import { formatAxis } from '/@/utils/formatTime';
 import { newsInfoList, recommendList } from './mock';
-
+import {storeToRefs} from "pinia";
+import {useUserInfo} from "/@/stores/userInfo";
+const stores = useUserInfo();
+const { userInfos } = storeToRefs(stores);
 // 定义变量内容
 const state = reactive<PersonalState>({
 	newsInfoList,

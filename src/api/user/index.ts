@@ -3,41 +3,41 @@ export function useUserApi() {
 	return {
 		getAdminList: (params?: object) => {
 			return request({
-				url: '/user/list',
+				url: '/admin/list',
 				method: 'get',
 				params,
 			});
 		},
 		UserInfo: () => {
 			return request({
-				url: '/user/info',
+				url: '/admin/info',
 				method: 'get',
 			});
 		},
 		getUser: (params?:object) => {
 			return request({
-				url: '/user/user',
+				url: '/admin/user',
 				method: 'get',
 				params
 			});
 		},
 		UserStatus: (data?: object) => {
 			return request({
-				url: '/user/status',
+				url: '/admin/status',
 				method: 'post',
 				data:data,
 			});
 		},
 		UserUpdate: (data?: object) => {
 			return request({
-				url: '/user/user_up',
+				url: '/admin/user_up',
 				method: 'post',
 				data:data,
 			});
 		},
 		UserCreate: (data?: object) => {
 			return request({
-				url: '/user/create',
+				url: '/admin/create',
 				method: 'post',
 				data:data,
 			});
