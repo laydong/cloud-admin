@@ -10,11 +10,15 @@ declare interface UserInfosState<T = any> {
 		nickname:string;
 		avatar:string;
 		sex :number;
+		mobile:string,
 		status:number;
 		login_ip:string;
 		login_time :string;
 		menu_info:UserRoleState[];
+		role:string,
 		role_info:string[];
+		describe:string,
+		email:string,
 		authBtnList: string[];
 		time: number;
 	};

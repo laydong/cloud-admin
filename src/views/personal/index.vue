@@ -12,7 +12,7 @@
 						</div>
 						<div class="personal-user-right">
 							<el-row>
-								<el-col :span="24" class="personal-title mb18">{{ currentTime }}，admin，生活变的再糟糕，也不妨碍我变得更好！ </el-col>
+								<el-col :span="24" class="personal-title mb18">{{ currentTime }}，{{userInfos.nickname}}，{{userInfos.describe}} </el-col>
 								<el-col :span="24">
 									<el-row>
 										<el-col :xs="24" :sm="8" class="personal-item mb6">
@@ -21,7 +21,7 @@
 										</el-col>
 										<el-col :xs="24" :sm="16" class="personal-item mb6">
 											<div class="personal-item-label">身份：</div>
-											<div class="personal-item-value">超级管理员</div>
+											<div class="personal-item-value">{{userInfos.role}}</div>
 										</el-col>
 									</el-row>
 								</el-col>
@@ -98,15 +98,15 @@
 									<el-input v-model="state.personalForm.autograph" placeholder="请输入签名" clearable></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-								<el-form-item label="职业">
-									<el-select v-model="state.personalForm.occupation" placeholder="请选择职业" clearable class="w100">
-										<el-option label="计算机 / 互联网 / 通信" value="1"></el-option>
-										<el-option label="生产 / 工艺 / 制造" value="2"></el-option>
-										<el-option label="医疗 / 护理 / 制药" value="3"></el-option>
-									</el-select>
-								</el-form-item>
-							</el-col>
+<!--							<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">-->
+<!--								<el-form-item label="职业">-->
+<!--									<el-select v-model="state.personalForm.occupation" placeholder="请选择职业" clearable class="w100">-->
+<!--										<el-option label="计算机 / 互联网 / 通信" value="1"></el-option>-->
+<!--										<el-option label="生产 / 工艺 / 制造" value="2"></el-option>-->
+<!--										<el-option label="医疗 / 护理 / 制药" value="3"></el-option>-->
+<!--									</el-select>-->
+<!--								</el-form-item>-->
+<!--							</el-col>-->
 							<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
 								<el-form-item label="手机">
 									<el-input v-model="state.personalForm.phone" placeholder="请输入手机" clearable></el-input>
@@ -115,7 +115,7 @@
 							<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
 								<el-form-item label="性别">
 									<el-select v-model="state.personalForm.sex" placeholder="请选择性别" clearable class="w100">
-										<el-option label="男" value="1"></el-option>
+										<el-option label="男" v-model:disabled="state.personalForm.sex" value="1"></el-option>
 										<el-option label="女" value="2"></el-option>
 									</el-select>
 								</el-form-item>
@@ -144,39 +144,39 @@
 							</div>
 						</div>
 					</div>
-					<div class="personal-edit-safe-box">
-						<div class="personal-edit-safe-item">
-							<div class="personal-edit-safe-item-left">
-								<div class="personal-edit-safe-item-left-label">密保手机</div>
-								<div class="personal-edit-safe-item-left-value">已绑定手机：132****4108</div>
-							</div>
-							<div class="personal-edit-safe-item-right">
-								<el-button text type="primary">立即修改</el-button>
-							</div>
-						</div>
-					</div>
-					<div class="personal-edit-safe-box">
-						<div class="personal-edit-safe-item">
-							<div class="personal-edit-safe-item-left">
-								<div class="personal-edit-safe-item-left-label">密保问题</div>
-								<div class="personal-edit-safe-item-left-value">已设置密保问题，账号安全大幅度提升</div>
-							</div>
-							<div class="personal-edit-safe-item-right">
-								<el-button text type="primary">立即设置</el-button>
-							</div>
-						</div>
-					</div>
-					<div class="personal-edit-safe-box">
-						<div class="personal-edit-safe-item">
-							<div class="personal-edit-safe-item-left">
-								<div class="personal-edit-safe-item-left-label">绑定QQ</div>
-								<div class="personal-edit-safe-item-left-value">已绑定QQ：110****566</div>
-							</div>
-							<div class="personal-edit-safe-item-right">
-								<el-button text type="primary">立即设置</el-button>
-							</div>
-						</div>
-					</div>
+<!--					<div class="personal-edit-safe-box">-->
+<!--						<div class="personal-edit-safe-item">-->
+<!--							<div class="personal-edit-safe-item-left">-->
+<!--								<div class="personal-edit-safe-item-left-label">密保手机</div>-->
+<!--								<div class="personal-edit-safe-item-left-value">已绑定手机：132****4108</div>-->
+<!--							</div>-->
+<!--							<div class="personal-edit-safe-item-right">-->
+<!--								<el-button text type="primary">立即修改</el-button>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="personal-edit-safe-box">-->
+<!--						<div class="personal-edit-safe-item">-->
+<!--							<div class="personal-edit-safe-item-left">-->
+<!--								<div class="personal-edit-safe-item-left-label">密保问题</div>-->
+<!--								<div class="personal-edit-safe-item-left-value">已设置密保问题，账号安全大幅度提升</div>-->
+<!--							</div>-->
+<!--							<div class="personal-edit-safe-item-right">-->
+<!--								<el-button text type="primary">立即设置</el-button>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="personal-edit-safe-box">-->
+<!--						<div class="personal-edit-safe-item">-->
+<!--							<div class="personal-edit-safe-item-left">-->
+<!--								<div class="personal-edit-safe-item-left-label">绑定QQ</div>-->
+<!--								<div class="personal-edit-safe-item-left-value">已绑定QQ：110****566</div>-->
+<!--							</div>-->
+<!--							<div class="personal-edit-safe-item-right">-->
+<!--								<el-button text type="primary">立即设置</el-button>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
 				</el-card>
 			</el-col>
 		</el-row>
@@ -196,12 +196,11 @@ const state = reactive<PersonalState>({
 	newsInfoList,
 	recommendList,
 	personalForm: {
-		name: '',
-		email: '',
-		autograph: '',
-		occupation: '',
-		phone: '',
-		sex: '',
+		name: stores.userInfos.nickname,
+		email: stores.userInfos.email,
+    describe: stores.userInfos.describe,
+		phone: stores.userInfos.mobile,
+		sex: stores.userInfos.sex,
 	},
 });
 

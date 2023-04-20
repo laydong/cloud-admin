@@ -19,10 +19,10 @@ declare type PersonalState = {
 	personalForm: {
 		name: string;
 		email: string;
-		autograph: string;
-		occupation: string;
+		describe: string;
+		// occupation: string;
 		phone: string;
-		sex: string;
+		sex: number;
 	};
 };
 

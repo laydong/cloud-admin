@@ -14,10 +14,14 @@ export const useUserInfo = defineStore('userInfo', {
 			nickname:'',
 			avatar:'',
 			sex:1,
+			mobile:'',
 			status:1,
 			login_time:'',
 			login_ip:'',
 			time: 0,
+			role:'',
+			describe:'',
+			email:'',
 			menu_info:[],
 			role_info: [],
 			authBtnList: [],
@@ -48,9 +52,13 @@ export const useUserInfo = defineStore('userInfo', {
 							this.userInfos.nickname = res.data.nickname
 							this.userInfos.username = res.data.username
 							this.userInfos.sex = res.data.sex
+							this.userInfos.mobile = res.data.mobile
 							this.userInfos.status = res.data.status
 							this.userInfos.login_ip = res.data.login_ip
 							this.userInfos.login_time = res.data.login_time
+							this.userInfos.role = res.data.role
+							this.userInfos.describe = res.data.describe
+							this.userInfos.email = res.data.email
 							this.userInfos.menu_info = res.data.menu_info
 							this.userInfos.role_info = res.data.role_info
 						}
